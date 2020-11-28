@@ -88,11 +88,13 @@ void led_switch(char note){
 
 void off()
 {
-  red_on=0;
-  green_on=0;
-  buzzer_set_period(0);
-  led_changed=1;
-  led_update();
+  if(red_on || green_on) {
+    red_on=0;
+    green_on=0;
+    buzzer_set_period(0);
+    led_changed=1;
+    led_update();
+  }
 }
 
 void state_advance()		

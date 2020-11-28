@@ -13,6 +13,10 @@ all:wakedemo.elf
 wakedemo.elf: ${COMMON_OBJECTS} wakedemo.o wdt_handler.o
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ -lTimer -lLcd 
 
+assy:
+	${CC} -s ${COMMON_OBJECTS} wakedemo.c wdt_handler.c
+	${CC} ${CFLAGS} ${LDFLAGS} -s $@ $^ -lTimer -lLcd 
+
 load: wakedemo.elf
 	msp430loader.sh $^
 

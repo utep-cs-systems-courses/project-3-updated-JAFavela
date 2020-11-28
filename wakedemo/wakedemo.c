@@ -16,7 +16,7 @@ void wdt_c_handler()
   secCount ++;
   if (secCount == 250) {		/* once/sec */
     secCount = 0;
-    fontFgColor = (fontFgColor == COLOR_GREEN) ? COLOR_BLACK : COLOR_GREEN;
+    fontFgColor = (fontFgColor == COLOR_GREEN) ? COLOR_BLUE : COLOR_GREEN;
     redrawScreen = 1;
   }
 }
@@ -36,7 +36,7 @@ void main()
   while (1) {			/* forever */
     if (redrawScreen) {
       redrawScreen = 0;
-      drawString5x7(20,20, "hello", fontFgColor, COLOR_BLUE);
+      drawString5x7(20,20, "Hello", fontFgColor, COLOR_BLUE);
     }
     P1OUT &= ~LED_GREEN;	/* green off */
     or_sr(0x10);		/**< CPU OFF */

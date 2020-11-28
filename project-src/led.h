@@ -8,6 +8,9 @@
 extern unsigned char red_on, green_on;
 extern unsigned char led_changed;
 
+//short redrawScreen = 1;
+//u_int fontFgColor = COLOR_GREEN;
+
 void led_init();
 void led_update();
 
