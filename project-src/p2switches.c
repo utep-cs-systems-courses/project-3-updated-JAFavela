@@ -4,7 +4,7 @@
 static unsigned char switch_mask;
 static unsigned char switches_last_reported;
 static unsigned char switches_current;
-
+char bState = 4;
 
 static void
 switch_update_interrupt_sense()
@@ -18,7 +18,6 @@ switch_update_interrupt_sense()
 void 
 p2sw_init(unsigned char mask)
 {
-  char bState=0;
   switch_mask = mask;
   P2REN |= mask;    /* enables resistors for switches */
   P2IE = mask;      /* enable interrupts from switches */
@@ -53,7 +52,7 @@ switch_interrupt_handler()
 {
   int readSwitch=p2sw_read();
   
-  if (1 & readSwitch) /* button1 pressed */
+  if ((1) & readSwitch) /* button1 pressed */
     bState = 0;
   else if (2 & readSwitch) /* button2 pressed */
     bState = 1;
@@ -61,4 +60,5 @@ switch_interrupt_handler()
     bState = 2;
   else if (8 & readSwitch) /* button4 pressed */
     bState = 3;
-  }
+  switch_update_interrupt_sense();
+}

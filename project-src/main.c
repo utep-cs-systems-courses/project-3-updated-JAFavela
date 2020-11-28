@@ -8,6 +8,7 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 #include "shape.h"
+#include <sr.h>
 
 
 short redrawScreen = 1;
@@ -16,13 +17,17 @@ u_int fontFgColor = COLOR_GREEN;
 void wdt_c_handler()
 {
   static int secCount = 0;
+  static int drawCnt = 0;
 
   secCount ++;
+  drawCnt++;
   if (secCount == 1) { /* once/sec */
     secCount = 0;
+    state_advance();
+  }
+  if (drawCnt == 225) {
     fontFgColor = (fontFgColor == COLOR_GREEN) ? COLOR_BLACK : COLOR_GREEN;
     redrawScreen = 1;
-    state_advance();
   }
 }
 
@@ -35,8 +40,9 @@ int main(void) {
   p2sw_init(15);
   or_sr(0x8);		/* CPU off, GIE on */
 
-  P1DIR |= LED_GREEN;/**< Green led on when CPU on */
-  P1OUT |= LED_GREEN;
+  green_on=1; /**< Green led on when CPU on */
+  led_changed=1;
+  led_update();
 
   clearScreen(COLOR_BLUE);
   while (1) {/* forever */
@@ -44,8 +50,12 @@ int main(void) {
       redrawScreen = 0;
       drawString5x7(20,20, "hello", fontFgColor, COLOR_BLUE);
     }
-    P1OUT &= ~LED_GREEN;/* green off */
+    green_on=0; /* green off */
+    led_changed=1;
+    led_update();
     or_sr(0x10);/**< CPU OFF */
-    P1OUT |= LED_GREEN;/* green on */
+    green_on=1; /* green on */
+    led_changed=1;
+    led_update();
   }
 }

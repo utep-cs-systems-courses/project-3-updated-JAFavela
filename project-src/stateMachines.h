@@ -6,7 +6,6 @@ void siren();
 void dim_rg_led();
 void led_switch(char note);
 void alternate_led();
-void chona();
 
 static char state = 0;
 
