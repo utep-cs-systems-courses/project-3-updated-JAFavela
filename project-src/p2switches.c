@@ -50,15 +50,13 @@ void
 
 switch_interrupt_handler()
 {
-  int readSwitch=p2sw_read();
-  
-  if ((1) & readSwitch) /* button1 pressed */
-    bState = 0;
-  else if (2 & readSwitch) /* button2 pressed */
-    bState = 1;
-  else if (4 & readSwitch) /* button3 pressed */
-    bState = 2;
-  else if (8 & readSwitch) /* button4 pressed */
-    bState = 3;
+  unsigned int readSwitch=p2sw_read();
+  unsigned int i;
+  for(i=0; i<4; i++){
+    if (readSwitch & (1<<i)){ /* check which button is pressed */
+      bState = i;
+      break;
+    }
+  }
   switch_update_interrupt_sense();
 }
