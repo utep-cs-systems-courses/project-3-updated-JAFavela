@@ -7,12 +7,20 @@ LDFLAGS		= -L../lib -L/opt/ti/msp430_gcc/include/
 #switch the compiler (for the internal make rules)
 CC              = msp430-elf-gcc
 AS              = msp430-elf-gcc -mmcu=${CPU} -c
+AR              = msp430-elf-ar
+
+OBJECTS         = p2switches.o
+
+libp2sw.a: $(OBJECTS)
+	$(AR) crs $@ $^
+
+$(OBJECTS): p2switches.h
 
 all: lastOne.elf
 
 #additional rules for files
 
-lastOne.elf: ${COMMON_OBJECTS} main.o wdt_handler.o buzzer.o p1_interrupt_handler.o switches.o stateMachines.o led.o ../lib/libTimer.a 
+lastOne.elf: ${COMMON_OBJECTS} main.o wdt_handler.o buzzer.o  p2switches.o stateMachines.o libp2sw.a led.o ../lib/libTimer.a 
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ -lTimer -lLcd -L../lib 
 
 load: lastOne.elf

@@ -4,7 +4,7 @@
 #include <libTimer.h>
 #include "led.h"
 #include "buzzer.h"
-#include "switches.h"
+#include "p2switches.h"
 #include "lcdutils.h"
 #include "lcddraw.h"
 #include "shape.h"
@@ -31,9 +31,8 @@ int main(void) {
   configureClocks();		/* setup master oscillator, CPU & peripheral clocks */
   led_init();
   buzzer_init();
-  switch_init();
   enableWDTInterrupts();	/* enable periodic interrupt */
-
+  p2sw_init(15);
   or_sr(0x8);		/* CPU off, GIE on */
 
   P1DIR |= LED_GREEN;/**< Green led on when CPU on */

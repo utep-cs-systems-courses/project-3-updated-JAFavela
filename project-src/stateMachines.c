@@ -2,7 +2,7 @@
 #include "stateMachines.h"
 #include "led.h"
 #include "buzzer.h"
-#include "switches.h"
+#include "p2switches.h"
 
 char bState;
 void siren()
