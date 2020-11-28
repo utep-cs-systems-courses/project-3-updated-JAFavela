@@ -25,10 +25,10 @@ void wdt_c_handler()
     secCount = 0;
     state_advance();
   }
-  if (drawCnt == 225) {
+  /*if (drawCnt == 225) {
     fontFgColor = (fontFgColor == COLOR_GREEN) ? COLOR_BLACK : COLOR_GREEN;
     redrawScreen = 1;
-  }
+    }*/
 }
 
 
@@ -39,23 +39,24 @@ int main(void) {
   enableWDTInterrupts();	/* enable periodic interrupt */
   p2sw_init(15);
   or_sr(0x8);		/* CPU off, GIE on */
-
-  green_on=1; /**< Green led on when CPU on */
+  /*
+  green_on=1; /**< Green led on when CPU on *
   led_changed=1;
   led_update();
 
   clearScreen(COLOR_BLUE);
-  while (1) {/* forever */
+  while (1) {/* forever *
     if (redrawScreen) {
       redrawScreen = 0;
       drawString5x7(20,20, "hello", fontFgColor, COLOR_BLUE);
     }
-    green_on=0; /* green off */
+    green_on=0; /* green off *
     led_changed=1;
     led_update();
-    or_sr(0x10);/**< CPU OFF */
-    green_on=1; /* green on */
+    or_sr(0x10);/**< CPU OFF *
+    green_on=1; /* green on *
     led_changed=1;
     led_update();
   }
+  */
 }

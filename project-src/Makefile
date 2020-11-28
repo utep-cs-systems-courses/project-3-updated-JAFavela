@@ -28,5 +28,5 @@ load: lastOne.elf
 	make clean
 
 clean:
-	rm -f *.o *.elf *~ *#
+	rm -f *.o *.elf *~ *# *.a
 

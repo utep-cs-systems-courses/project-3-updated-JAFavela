@@ -4,7 +4,7 @@
 static unsigned char switch_mask;
 static unsigned char switches_last_reported;
 static unsigned char switches_current;
-char bState = 4;
+char bState=4;
 
 static void
 switch_update_interrupt_sense()
@@ -12,10 +12,10 @@ switch_update_interrupt_sense()
   switches_current = P2IN & switch_mask;
   /* update switch interrupt to detect changes from current buttons */
   P2IES |= (switches_current);  /* if switch up, sense down */
-  P2IES &= (switches_current | ~switch_mask); /* if switch down, sense up */
+  // P2IES &= (switches_current | ~switch_mask); /* if switch down, sense up */
 }
 
-void 
+void
 p2sw_init(unsigned char mask)
 {
   switch_mask = mask;
@@ -23,7 +23,6 @@ p2sw_init(unsigned char mask)
   P2IE = mask;      /* enable interrupts from switches */
   P2OUT |= mask;    /* pull-ups for switches */
   P2DIR &= ~mask;   /* set switches' bits for input */
-
   switch_update_interrupt_sense();
 }
 
@@ -43,20 +42,19 @@ void
 __interrupt_vec(PORT2_VECTOR) Port_2(){
   if (P2IFG & switch_mask) {  /* did a button cause this interrupt? */
     P2IFG &= ~switch_mask;	/* clear pending sw interrupts */
+    switch_update_interrupt_sense();
     switch_interrupt_handler();
   }
 }
 void
-
 switch_interrupt_handler()
 {
   unsigned int readSwitch=p2sw_read();
   unsigned int i;
   for(i=0; i<4; i++){
-    if (readSwitch & (1<<i)){ /* check which button is pressed */
+    if ((readSwitch & (1<<i))==0){ /* check which button is pressed*/ 
       bState = i;
       break;
     }
   }
-  switch_update_interrupt_sense();
 }
