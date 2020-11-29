@@ -3,6 +3,10 @@
 #include "led.h"
 #include "buzzer.h"
 #include "p2switches.h"
+#include "lcdutils.h"
+#include "lcddraw.h"
+#include "shape.h"
+
 
 char bState;
 void siren()
@@ -54,13 +58,17 @@ void alternate_led()
   static char ledState1=0;
   switch(ledState1){
   case 0:
-    red_on=1;
-    green_on=0;
+    fillRectangle(0,65,65,20,COLOR_BLUE);
+    fillRectangle(65,65,65,20,COLOR_WHITE);
+    //red_on=1;
+    //green_on=0;
     ledState1++;
     break;
   case 20:
-    red_on=0;
-    green_on=1;
+    fillRectangle(65,65,65,20,COLOR_RED);
+    fillRectangle(0,65,65,20,COLOR_WHITE);
+    //red_on=0;
+    //green_on=1;
     ledState1++;
     break;
   case 40:
@@ -88,13 +96,11 @@ void led_switch(char note){
 
 void off()
 {
-  if(red_on || green_on) {
-    red_on=0;
-    green_on=0;
-    buzzer_set_period(0);
-    led_changed=1;
-    led_update();
-  }
+  red_on=0;
+  green_on=0;
+  buzzer_set_period(0);
+  led_changed=1;
+  led_update();
 }
 
 void state_advance()		

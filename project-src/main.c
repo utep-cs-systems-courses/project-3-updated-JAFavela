@@ -39,6 +39,8 @@ int main(void) {
   enableWDTInterrupts();	/* enable periodic interrupt */
   p2sw_init(15);
   or_sr(0x8);		/* CPU off, GIE on */
+  lcd_init();
+  clearScreen(COLOR_WHITE);
   /*
   green_on=1; /**< Green led on when CPU on *
   led_changed=1;

@@ -1,5 +1,7 @@
 #include <msp430.h>
 #include "p2switches.h"
+#include "lcdutils.h"
+#include "lcddraw.h"
 
 static unsigned char switch_mask;
 static unsigned char switches_last_reported;
@@ -54,6 +56,7 @@ switch_interrupt_handler()
   for(i=0; i<4; i++){
     if ((readSwitch & (1<<i))==0){ /* check which button is pressed*/ 
       bState = i;
+      clearScreen(COLOR_WHITE);
       break;
     }
   }
