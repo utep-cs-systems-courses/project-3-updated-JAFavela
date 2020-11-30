@@ -94,6 +94,36 @@ void drawString5x7(u_char col, u_char row, char *string,
   }
 }
 
+void drawChar8x12(u_char rcol, u_char rrow, char c, u_int fgColorBGR, u_int bgColorBGR)
+{
+  u_char col = 0;
+  u_char row = 0;
+  u_char bit = 0xff;
+  u_char oc = c - 0x20;
+
+  lcd_setArea(rcol, rrow, rcol + 7, rrow + 11); /* relative to requested col/row */
+
+  while (col < 12) {
+    while (row < 8) {
+      u_int colorBGR = (font_8x12[oc][col] & bit) ? fgColorBGR : bgColorBGR;
+      lcd_writeColor(colorBGR);
+      row++;
+      bit >>= 1;
+    }
+    row = 0;
+    bit = 0x80;
+    col++;
+  }
+}
+
+void drawString8x12(u_char col, u_char row, char *string, u_int fgColorBGR, u_int bgColorBGR)
+{
+  u_char cols = col;
+  while (*string) {
+    drawChar8x12(cols, row, *string++, fgColorBGR, bgColorBGR);
+    cols += 9;
+  }
+}
 
 /** Draw rectangle outline
  *  
@@ -136,11 +166,26 @@ void carL2(u_char colMin, u_char rowMin) {
   char lim=7;
   for(r=rowMin; r<rowMin+3; r++) {
     for(c=colMin; c<colMin+lim; c++) {
-      drawPixel(c,r,COLOR_WHITE);
+      if(c<129)
+	drawPixel(c,r,COLOR_WHITE);
     }
     for(c=colMin+13; c>((colMin+13)-lim); c--) {
-      drawPixel(c,r,COLOR_WHITE);
+      if(c<129)
+	drawPixel(c,r,COLOR_WHITE);
     }
     lim=lim-2;
   }
+  for(r=rowMin; r<rowMin+8; r++){
+    if(colMin<129)
+      drawPixel(colMin,r,COLOR_WHITE);
+  }
+  drawPixel(colMin+1,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+2,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+5,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+6,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+7,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+8,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+11,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+12,rowMin+7,COLOR_WHITE);
+  drawPixel(colMin+13,rowMin+7,COLOR_WHITE);
 }

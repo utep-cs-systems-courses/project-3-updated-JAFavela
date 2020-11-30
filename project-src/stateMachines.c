@@ -117,10 +117,16 @@ void state_advance()
     dim_rg_led();
   }
   else if(bState==1){
+    static char space=0;
     if(copSt==1){
       buzzer_set_period(0);
-      drawCar(20,20,COLOR_BLACK);
       copSt=2;
+    }
+    drawCar(space,20,COLOR_BLACK);
+    space++;
+    if(space==128){
+      sState=0;
+      bState=2;
     }
     if(sState==0){
       led_switch(1);

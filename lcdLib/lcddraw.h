@@ -63,6 +63,8 @@ void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
 void drawCar(u_char colMin, u_char rowMin, u_int colorBGR);
 void carL1(u_char colMin, u_char rowMin, u_int colorBGR);
 void carL2(u_char colMin, u_char rowMin);
+void drawString8x12(u_char col, u_char row, char *string, u_int fgColorBGR, u_int bgColorBGR);
+void drawChar8x12(u_char rcol, u_char rrow, char c, u_int fgColorBGR, u_int bgColorBGR);
 #endif // included
 
 
