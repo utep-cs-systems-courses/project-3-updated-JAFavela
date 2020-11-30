@@ -102,6 +102,7 @@ void cop(){
     fillRectangle(0,115+i,5-i,1,COLOR_BLACK);
   }
   fillRectangle(0,135,128,25,COLOR_BLACK);
+  drawString8x12(5,145,"  ARCH. P.D.",COLOR_WHITE,COLOR_BLACK);
 }
 
 void state_advance()		
