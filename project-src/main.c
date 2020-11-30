@@ -42,10 +42,7 @@ int main(void) {
   lcd_init();
   clearScreen(COLOR_WHITE);
   /*
-  green_on=1; /**< Green led on when CPU on *
-  led_changed=1;
-  led_update();
-
+  
   clearScreen(COLOR_BLUE);
   while (1) {/* forever *
     if (redrawScreen) {

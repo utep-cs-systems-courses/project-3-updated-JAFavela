@@ -10,6 +10,8 @@
 
 char bState;
 char first=0;
+
+
 void siren()
 {
   static int cyc = 4000;    /* 500Hz = 4000 cycles */
@@ -74,24 +76,15 @@ void litCop()
   }
 }
 
-void led_switch(char note){
-  if(note==0){
-    red_on=1;
-  }
-  else{
-    red_on=0;
-  }
-  led_changed=1;
-  led_update();
-}
-
 void off()
 {
   red_on=0;
   buzzer_set_period(0);
-  clearScreen(COLOR_WHITE);
   led_changed=1;
   led_update();
+  clearScreen(COLOR_WHITE);
+  or_sr(~0x10);
+  
 }
 
 void cop(){
@@ -107,9 +100,8 @@ void cop(){
 
 void state_advance()		
 {
-  static int copSt=0;
+  static char copSt=0;
   static char sState=0;
-  
   if(bState==0){
     if(copSt==0){
       cop();
@@ -117,15 +109,18 @@ void state_advance()
     }
     dim_rg_led();
   }
-  else if(bState==1){
-    static char space=0;
-    if(copSt==1){
+  
+  else if (bState == 1){
+    static char space = 0;
+    if (copSt == 1) {
       buzzer_set_period(0);
       copSt=2;
     }
-    drawCar(space,20,COLOR_BLACK);
-    space++;
-    if(space==128){
+    if(space<129){
+      drawCar(space,20,COLOR_BLACK);
+      space++;
+    }
+    else{
       sState=0;
       bState=2;
     }
@@ -148,11 +143,8 @@ void state_advance()
     }
     sState++;
   }
+  
   else if(bState==3){
     off();
   }
-}
-void stateAdvanceCop()
-{
-  char e;
 }
