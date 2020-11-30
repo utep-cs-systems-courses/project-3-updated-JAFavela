@@ -11,7 +11,6 @@
 char bState;
 char first=0;
 
-
 void siren()
 {
   static int cyc = 4000;    /* 500Hz = 4000 cycles */
@@ -35,24 +34,7 @@ void siren()
   }
 }
 
-void dim_rg_led()
-{
-  static char ledState=0;
-  switch(ledState){
-  case 0:         /* leds are both off from 0-2 */
-    red_on=0;
-    ledState++;
-    break;
-  case 5:         /* leds are on at 3 */
-    red_on=1;
-    ledState=0;
-    break;
-  default:
-    ledState++;
-  }
-  led_changed=1;
-  led_update();
-}
+
 
 void litCop()
 {
@@ -100,6 +82,8 @@ void cop(){
 
 void state_advance()		
 {
+  static char intensity=1;
+  static int ledCnt=0;
   static char copSt=0;
   static char sState=0;
   if(bState==0){
@@ -107,6 +91,7 @@ void state_advance()
       cop();
       copSt=1;
     }
+    ledCnt++;
     dim_rg_led();
   }
   
