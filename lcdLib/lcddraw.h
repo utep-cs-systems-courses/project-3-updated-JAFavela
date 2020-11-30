@@ -60,6 +60,9 @@ void drawChar5x7(u_char col, u_char row, char c,
  */
 void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
 		     u_int colorBGR);
+void drawCar(u_char colMin, u_char rowMin, u_int colorBGR);
+void carL1(u_char colMin, u_char rowMin, u_int colorBGR);
+void carL2(u_char colMin, u_char rowMin);
 #endif // included
 
 

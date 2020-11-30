@@ -115,3 +115,32 @@ void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
   fillRectangle(colMin + width, rowMin, 1, height, colorBGR);
 }
 
+void drawCar(u_char colMin, u_char rowMin, u_int colorBGR) {
+  carL1(colMin, rowMin, colorBGR);
+  carL2(colMin, rowMin-1);
+}
+
+void carL1(u_char colMin, u_char rowMin, u_int colorBGR) {
+  char c;
+  char r;
+  for(c=colMin; c<colMin+15; c++) {
+    for(r=rowMin; r<rowMin+9; r++) {
+      drawPixel(c,r, colorBGR);
+    }
+  }
+}
+
+void carL2(u_char colMin, u_char rowMin) {
+  char c;
+  char r;
+  char lim=7;
+  for(r=rowMin; r<rowMin+3; r++) {
+    for(c=colMin; c<colMin+lim; c++) {
+      drawPixel(c,r,COLOR_WHITE);
+    }
+    for(c=colMin+13; c>((colMin+13)-lim); c--) {
+      drawPixel(c,r,COLOR_WHITE);
+    }
+    lim=lim-2;
+  }
+}

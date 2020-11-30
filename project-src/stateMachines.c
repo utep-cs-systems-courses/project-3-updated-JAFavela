@@ -9,6 +9,7 @@
 
 
 char bState;
+char first=0;
 void siren()
 {
   static int cyc = 4000;    /* 500Hz = 4000 cycles */
@@ -38,12 +39,10 @@ void dim_rg_led()
   switch(ledState){
   case 0:         /* leds are both off from 0-2 */
     red_on=0;
-    green_on=0;
     ledState++;
     break;
   case 5:         /* leds are on at 3 */
     red_on=1;
-    green_on=1;
     ledState=0;
     break;
   default:
@@ -53,42 +52,34 @@ void dim_rg_led()
   led_update();
 }
 
-void alternate_led()
+void litCop()
 {
-  static char ledState1=0;
-  switch(ledState1){
+  static char lightState=0;
+  switch(lightState){
   case 0:
-    fillRectangle(0,65,65,20,COLOR_BLUE);
-    fillRectangle(65,65,65,20,COLOR_WHITE);
-    //red_on=1;
-    //green_on=0;
-    ledState1++;
+    fillRectangle(0,85,65,20,COLOR_BLUE);
+    fillRectangle(65,85,65,20,COLOR_WHITE);
+    lightState++;
     break;
   case 20:
-    fillRectangle(65,65,65,20,COLOR_RED);
-    fillRectangle(0,65,65,20,COLOR_WHITE);
-    //red_on=0;
-    //green_on=1;
-    ledState1++;
+    fillRectangle(65,85,65,20,COLOR_RED);
+    fillRectangle(0,85,65,20,COLOR_WHITE);
+    lightState++;
     break;
   case 40:
-    ledState1=0;
+    lightState=0;
     break;
   default:
-    ledState1++;
+    lightState++;
   }
-  led_changed=1;
-  led_update();
 }
 
 void led_switch(char note){
   if(note==0){
     red_on=1;
-    green_on=0;
   }
   else{
     red_on=0;
-    green_on=1;
   }
   led_changed=1;
   led_update();
@@ -97,20 +88,40 @@ void led_switch(char note){
 void off()
 {
   red_on=0;
-  green_on=0;
   buzzer_set_period(0);
+  clearScreen(COLOR_WHITE);
   led_changed=1;
   led_update();
 }
 
+void cop(){
+  char i = 0;
+  fillRectangle(0,105,128,10,COLOR_BLACK);
+  for( ; i<6; i++){
+    fillRectangle(123+i,115+i,5-i,1,COLOR_BLACK);
+    fillRectangle(0,115+i,5-i,1,COLOR_BLACK);
+  }
+  fillRectangle(0,135,128,25,COLOR_BLACK);
+}
+
 void state_advance()		
 {
+  static int copSt=0;
   static char sState=0;
+  
   if(bState==0){
+    if(copSt==0){
+      cop();
+      copSt=1;
+    }
     dim_rg_led();
   }
   else if(bState==1){
-    buzzer_set_period(0);
+    if(copSt==1){
+      buzzer_set_period(0);
+      drawCar(20,20,COLOR_BLACK);
+      copSt=2;
+    }
     if(sState==0){
       led_switch(1);
       sState=1;
@@ -126,11 +137,15 @@ void state_advance()
       sState=0;
     }
     if(sState % 2){
-      alternate_led();
+      litCop();
     }
     sState++;
   }
   else if(bState==3){
     off();
   }
+}
+void stateAdvanceCop()
+{
+  char e;
 }
