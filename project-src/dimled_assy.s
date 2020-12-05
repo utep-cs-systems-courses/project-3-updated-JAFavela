@@ -19,11 +19,11 @@ jt:
 
 	
 dim_rg_led:
-	move.b	&ledState, r12
+	mov.b	&ledState, r12
 	cmp	#6, r12
 	jhs	default
 	add.b	r12,r12
-	jmp	jt(r12)	
+	mov	jt(r12), r0	
 case0:
 	mov.b	#0, &red_on
 	mov.b	&ledState, r12
@@ -37,7 +37,7 @@ case3:
 case4:
 	jmp	default
 case5:
-	move.b	#1, &red_on
+	mov.b	#1, &red_on
 	mov.b	#0, &ledState
 default:
 	mov.b	&ledState, r12

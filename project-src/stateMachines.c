@@ -9,7 +9,6 @@
 
 
 char bState;
-char first=0;
 
 void siren()
 {
@@ -24,13 +23,13 @@ void siren()
       state++;
     }
     break;
-   case 1:                  /* Going down with green led */
-     buzzer_set_period(cyc);
-     cyc=cyc+360;            /* In this state we increment cycle by 360 = 1/10 steps back to 4000 */
-     if(cyc==4360){         /* When limit is reached reset cycle to 4000 and loop back to state 0*/
+  case 1:                  /* Going down with green led */
+    buzzer_set_period(cyc);
+    cyc=cyc+360;            /* In this state we increment cycle by 360 = 1/10 steps back to 4000 */
+    if(cyc==4360){         /* When limit is reached reset cycle to 4000 and loop back to state 0*/
       cyc=4000;
       state=0;
-     }
+    }
   }
 }
 
@@ -65,8 +64,7 @@ void off()
   led_changed=1;
   led_update();
   clearScreen(COLOR_WHITE);
-  or_sr(~0x10);
-  
+  or_sr(0x8);
 }
 
 void cop(){
@@ -80,9 +78,8 @@ void cop(){
   drawString8x12(5,145,"  ARCH. P.D.",COLOR_WHITE,COLOR_BLACK);
 }
 
-void state_advance()		
+void state_advance()
 {
-  static char intensity=1;
   static int ledCnt=0;
   static char copSt=0;
   static char sState=0;
@@ -94,7 +91,6 @@ void state_advance()
     ledCnt++;
     dim_rg_led();
   }
-  
   else if (bState == 1){
     static char space = 0;
     if (copSt == 1) {
@@ -107,7 +103,7 @@ void state_advance()
     }
     else{
       sState=0;
-      bState=2;
+      bState=5;
     }
     if(sState==0){
       led_switch(1);
@@ -118,7 +114,26 @@ void state_advance()
       sState=0;
     }
   }
-  else if(bState==2){
+  else if (bState == 2) {
+    buzzer_set_period(0);
+    static char bAw = 0;
+    if (bAw){
+      clearScreen(COLOR_BLACK);
+      drawString8x12(25,60,"THATS ALL",COLOR_WHITE,COLOR_BLACK);
+      drawString8x12(35,80,"FOLKS!",COLOR_WHITE,COLOR_BLACK);
+      bAw &= 0;
+    }
+    else {
+      clearScreen(COLOR_WHITE);
+      drawString8x12(25,60,"THATS ALL",COLOR_BLACK,COLOR_WHITE);
+      drawString8x12(35,80,"FOLKS!",COLOR_BLACK,COLOR_WHITE);
+      bAw |= 1;
+    }
+  }
+  else if(bState==3){
+    off();
+  }
+  else if(bState==5){
     if(sState==5){
       siren();
       sState=0;
@@ -127,9 +142,5 @@ void state_advance()
       litCop();
     }
     sState++;
-  }
-  
-  else if(bState==3){
-    off();
   }
 }
