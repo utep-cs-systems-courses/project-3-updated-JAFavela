@@ -9,7 +9,7 @@
 #include "shape.h"
 #include <sr.h>
 
-short redrawScreen = 1;
+short redrawScreen = 0;
 
 void wdt_c_handler()
 {
