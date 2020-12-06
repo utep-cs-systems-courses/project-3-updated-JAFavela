@@ -7,7 +7,6 @@
 static unsigned char switch_mask;
 static unsigned char switches_last_reported;
 static unsigned char switches_current;
-char bState=4;
 
 static void
 switch_update_interrupt_sense()

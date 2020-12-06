@@ -9,6 +9,7 @@ void alternate_led();
 void drawCorners();
 void litCop();
 
+extern short redrawScreen;
 static char state = 0;
 
 #endif // included

@@ -8,7 +8,7 @@
 #include "shape.h"
 
 
-char bState;
+char bState=4;
 
 void siren()
 {
@@ -55,6 +55,7 @@ void litCop()
   default:
     lightState++;
   }
+  redrawScreen=1;
 }
 
 void off()
@@ -64,6 +65,7 @@ void off()
   led_changed=1;
   led_update();
   clearScreen(COLOR_WHITE);
+  redrawScreen=1;
   or_sr(0x8);
 }
 
@@ -76,6 +78,7 @@ void cop(){
   }
   fillRectangle(0,135,128,25,COLOR_BLACK);
   drawString8x12(5,145,"  ARCH. P.D.",COLOR_WHITE,COLOR_BLACK);
+  redrawScreen=1;
 }
 
 void state_advance()
@@ -99,6 +102,7 @@ void state_advance()
     }
     if(space<129){
       drawCar(space,20,COLOR_BLACK);
+      redrawScreen=1;
       space++;
     }
     else{
@@ -120,13 +124,13 @@ void state_advance()
     if (bAw){
       clearScreen(COLOR_BLACK);
       drawString8x12(25,60,"THATS ALL",COLOR_WHITE,COLOR_BLACK);
-      drawString8x12(35,80,"FOLKS!",COLOR_WHITE,COLOR_BLACK);
+      drawString8x12(35,80," FOLKS!",COLOR_WHITE,COLOR_BLACK);
       bAw &= 0;
     }
     else {
       clearScreen(COLOR_WHITE);
       drawString8x12(25,60,"THATS ALL",COLOR_BLACK,COLOR_WHITE);
-      drawString8x12(35,80,"FOLKS!",COLOR_BLACK,COLOR_WHITE);
+      drawString8x12(35,80," FOLKS!",COLOR_BLACK,COLOR_WHITE);
       bAw |= 1;
     }
   }
